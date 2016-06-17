@@ -10,6 +10,12 @@ function getTransactions(page) {
     return rp(options);
 }
 
+function calculateTotalBalance(transactions) {
+    return _.reduce(transactions, function(sum, transaction) {
+        return sum + parseFloat(transaction.Amount);
+    }, 0);
+}
+
 function main() {
     var transactions = [];
     getTransactions(1)
@@ -28,6 +34,9 @@ function main() {
             _.each(things, function(res) {
                 transactions = _.concat(transactions, res.transactions);
             });
+            var totalBalance = calculateTotalBalance(transactions);  // Crunch the numbers
+            console.log('total balance is ' + totalBalance);
+            console.log('# of transactions is ' + transactions.length);
         }).catch(function (err) {
             console.log(err);
         });
