@@ -27,18 +27,24 @@ function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
+function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
+    var pagesLeft = _.ceil((totalCount - maxCountPerPage) / maxCountPerPage);
+    var secondPage = firstPage + 1;
+    var lastPage = firstPage + pagesLeft;
+    var restOfPageNums = [];
+    for(var i = secondPage; i <= lastPage; i++) {
+        restOfPageNums.push(i);
+    }
+    return restOfPageNums;
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
         transactions = _.concat(transactions, res.transactions);
-        var totalCount = res.totalCount;
-        var page = res.page;
-        var pagesLeft = _.ceil((totalCount - transactions.length) / transactions.length);
-        // console.log('pagesLeft: ' + pagesLeft);
-        var promises = [];
-        for(var i = page + 1; i <= page + pagesLeft; i++) {
-            promises.push(getTransactions(i));
-        }
+        var promises = _.map(getRestOfPageNums(res.totalCount, res.page, res.transactions.length), function (pageNum) {
+            return getTransactions(pageNum);
+        });
         return Promise.all(promises);
     }).then(function(things) {
         _.each(things, function(res) {
