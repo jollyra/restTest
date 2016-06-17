@@ -3,6 +3,7 @@ var _ = require('lodash');
 
 
 function getTransactions(page) {
+    page = page || 1;  // This paginated API starts at page 1
     var options = {
         uri: 'http://resttest.bench.co/transactions/' + page + '.json',
         json: true
@@ -27,7 +28,7 @@ function deepCopy(obj) {
 }
 
 var transactions = [];
-getTransactions(1)
+getTransactions()
     .then(function (res) {
         transactions = _.concat(transactions, res.transactions);
         var totalCount = res.totalCount;
