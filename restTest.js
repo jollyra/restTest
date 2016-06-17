@@ -16,6 +16,11 @@ function calculateTotalBalance(transactions) {
     }, 0);
 }
 
+// Quick and dirty deep copy of an object
+function deepCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 function main() {
     var transactions = [];
     getTransactions(1)
