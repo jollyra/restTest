@@ -1,5 +1,5 @@
-var rp = require('request-promise'),
-    _ = require('lodash');
+var rp = require('request-promise');
+var _ = require('lodash');
 
 
 function getTransactions(page) {
