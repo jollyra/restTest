@@ -16,6 +16,11 @@ function calculateTotalBalance(transactions) {
     }, 0);
 }
 
+function humanizeVendorName(name) {
+    // console.log(name);
+    return name;
+}
+
 // Quick and dirty deep copy of an object
 function deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
@@ -41,7 +46,13 @@ function main() {
             });
             var totalBalance = calculateTotalBalance(transactions);  // Crunch the numbers
             console.log('total balance is ' + totalBalance);
-            console.log('# of transactions is ' + transactions.length);
+
+            humanizedTransactions = _.map(transactions, function(t) {
+                var t2 = deepCopy(t);
+                t2.HumanizedCompany = humanizeVendorName(t2.Company);
+                return t2;
+            });
+
         }).catch(function (err) {
             console.log(err);
         });
