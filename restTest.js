@@ -68,8 +68,8 @@ getTransactions()
             return getTransactions(pageNum);
         });
         return Promise.all(promises);
-    }).then(function(things) {
-        _.each(things, function(res) {
+    }).then(function(pages) {
+        _.each(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
         console.log('# of transactions is ' + transactions.length);
