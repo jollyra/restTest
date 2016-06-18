@@ -2,15 +2,6 @@ var rp = require('request-promise');
 var _ = require('lodash');
 
 
-function getTransactions(page) {
-    page = page || 1;  // This paginated API starts at page 1
-    var options = {
-        uri: 'http://resttest.bench.co/transactions/' + page + '.json',
-        json: true
-    };
-    return rp(options);
-}
-
 function calculateBalance(transactions) {
     return _.reduce(transactions, function(sum, transaction) {
         return sum + parseFloat(transaction.Amount);
@@ -29,17 +20,6 @@ function humanizeVendorName(name, rules) {
         name = rule(name);
     });
     return name;
-}
-
-function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
-    var pagesLeft = _.ceil((totalCount - maxCountPerPage) / maxCountPerPage);
-    var secondPage = firstPage + 1;
-    var lastPage = firstPage + pagesLeft;
-    var restOfPageNums = [];
-    for(var i = secondPage; i <= lastPage; i++) {
-        restOfPageNums.push(i);
-    }
-    return restOfPageNums;
 }
 
 function compareTransactions(t1, t2) {
@@ -137,6 +117,26 @@ function demo(transactions) {
     console.log('--------------------------------------------------------------');
     console.log(runningTotals);
     console.log('\n');
+}
+
+function getTransactions(page) {
+    page = page || 1;  // This paginated API starts at page 1
+    var options = {
+        uri: 'http://resttest.bench.co/transactions/' + page + '.json',
+        json: true
+    };
+    return rp(options);
+}
+
+function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
+    var pagesLeft = _.ceil((totalCount - maxCountPerPage) / maxCountPerPage);
+    var secondPage = firstPage + 1;
+    var lastPage = firstPage + pagesLeft;
+    var restOfPageNums = [];
+    for(var i = secondPage; i <= lastPage; i++) {
+        restOfPageNums.push(i);
+    }
+    return restOfPageNums;
 }
 
 var transactions = [];
