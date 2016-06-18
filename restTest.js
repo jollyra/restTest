@@ -100,6 +100,16 @@ function filterByDate(transactions, endDate, startDate) {
     });
 }
 
+// Demo for running total for each day that occurs in the list of transactions
+function calculateDailyRunningTotal(transactions) {
+    var dates = _.uniq(_.map(transactions, 'Date'));
+    var runningTotals = {};
+    _.forEach(dates, function(date) {
+        runningTotals[date] = calculateBalance(filterByDate(transactions, date));
+    });
+    return runningTotals;
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -129,9 +139,8 @@ getTransactions()
         var catagoryTotals = calculateCategoryTotals(categorized);
         console.log(catagoryTotals);
 
-        // Calculate running total
-        var ts = filterByDate(transactions, '2013-12-22', '2013-12-20');
-        console.log(ts);
+        var runningTotals = calculateDailyRunningTotal(transactions);
+        console.log(runningTotals);
 
     }).catch(function (err) {
         console.log(err);
