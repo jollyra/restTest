@@ -31,11 +31,6 @@ function humanizeVendorName(name, rules) {
     return name;
 }
 
-// Quick and dirty deep copy of an object
-function deepCopy(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
 function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
     var pagesLeft = _.ceil((totalCount - maxCountPerPage) / maxCountPerPage);
     var secondPage = firstPage + 1;
