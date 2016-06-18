@@ -46,7 +46,7 @@ function compareTransactions(t1, t2) {
     var isEqual = t1.Ledger === t2.Ledger && t1.Amount === t2.Amount &&
         t1.Company === t2.Company && t1.Date === t2.Date;
     if(isEqual) {
-        console.log('found duplicate transaction: ', t1);
+        console.log('found duplicate transaction: ', JSON.stringify(t1));
     }
     return isEqual;
 }
@@ -117,6 +117,8 @@ getTransactions()
         _.forEach(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
+        console.log('\nSummary of transactions');
+        console.log('=======================');
         console.log('downloaded %d transactions', transactions.length);
 
         var totalBalance = calculateBalance(transactions);  // Crunch the numbers
@@ -130,12 +132,22 @@ getTransactions()
         console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
 
         var categorized = getTransactionsByCategory(transactions);
+        console.log('\ntransactions listed by category');
+        console.log('-------------------------------');
+        console.log(categorized);
+        console.log('\n');
 
         var catagoryTotals = calculateCategoryTotals(categorized);
+        console.log('\ntotal expenses by category');
+        console.log('--------------------------');
         console.log(catagoryTotals);
+        console.log('\n');
 
         var runningTotals = calculateDailyRunningTotal(transactions);
+        console.log('\nrunning total for each day represented in the transaction list');
+        console.log('--------------------------------------------------------------');
         console.log(runningTotals);
+        console.log('\n');
 
     }).catch(function (err) {
         console.log(err);
