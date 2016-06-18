@@ -105,6 +105,40 @@ function calculateDailyRunningTotal(transactions) {
     return runningTotals;
 }
 
+function demo(transactions) {
+    console.log('\nSummary of transactions');
+    console.log('=======================');
+    console.log('downloaded %d transactions', transactions.length);
+
+    var totalBalance = calculateBalance(transactions);  // Crunch the numbers
+    console.log('total balance is $%d', totalBalance);
+
+    _.forEach(transactions, function(transaction) {
+        transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
+    });
+
+    var dedupedTransactions = removeDuplicates(transactions);
+    console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
+
+    var categorized = getTransactionsByCategory(transactions);
+    console.log('\ntransactions listed by category');
+    console.log('-------------------------------');
+    console.log(categorized);
+    console.log('\n');
+
+    var catagoryTotals = calculateCategoryTotals(categorized);
+    console.log('\ntotal expenses by category');
+    console.log('--------------------------');
+    console.log(catagoryTotals);
+    console.log('\n');
+
+    var runningTotals = calculateDailyRunningTotal(transactions);
+    console.log('\nrunning total for each day represented in the transaction list');
+    console.log('--------------------------------------------------------------');
+    console.log(runningTotals);
+    console.log('\n');
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -117,38 +151,8 @@ getTransactions()
         _.forEach(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
-        console.log('\nSummary of transactions');
-        console.log('=======================');
-        console.log('downloaded %d transactions', transactions.length);
-
-        var totalBalance = calculateBalance(transactions);  // Crunch the numbers
-        console.log('total balance is $%d', totalBalance);
-
-        _.forEach(transactions, function(transaction) {
-            transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
-        });
-
-        var dedupedTransactions = removeDuplicates(transactions);
-        console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
-
-        var categorized = getTransactionsByCategory(transactions);
-        console.log('\ntransactions listed by category');
-        console.log('-------------------------------');
-        console.log(categorized);
-        console.log('\n');
-
-        var catagoryTotals = calculateCategoryTotals(categorized);
-        console.log('\ntotal expenses by category');
-        console.log('--------------------------');
-        console.log(catagoryTotals);
-        console.log('\n');
-
-        var runningTotals = calculateDailyRunningTotal(transactions);
-        console.log('\nrunning total for each day represented in the transaction list');
-        console.log('--------------------------------------------------------------');
-        console.log(runningTotals);
-        console.log('\n');
-
+        // Demo the calculations specified on the restTest page
+        demo(transactions);
     }).catch(function (err) {
         console.log(err);
     });
