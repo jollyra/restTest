@@ -60,6 +60,12 @@ function removeDuplicates(transactions) {
     return _.uniqWith(transactions, compareTransactions);
 }
 
+function getTransactionsByCategory(transactions) {
+    return _.groupBy(transactions, function (transaction) {
+        return transaction.Ledger;
+    });
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -84,6 +90,9 @@ getTransactions()
 
         var dedupedTransactions = removeDuplicates(transactions);
         console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
+
+        var categorized = getTransactionsByCategory(transactions);
+        console.log(categorized);
 
     }).catch(function (err) {
         console.log(err);
