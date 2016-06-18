@@ -17,8 +17,17 @@ function calculateTotalBalance(transactions) {
     }, 0);
 }
 
-function humanizeVendorName(name) {
-    // console.log(name);
+var humanizingRules = [
+    function removeCreditCard(str) { return str.replace(/x{4,}\d+\s?/, ''); },  // e.g. 'xxxxxxxx6414'
+    function removeLocationNumber(str) { return str.replace(/#[a-z]?\d+\s?/, ''); },  // e.g. '#x7618'
+    function removeWhiteSpace(str) { return str.trim(); }
+];
+
+function humanizeVendorName(name, rules) {
+    rules = rules || [];
+    _.each(rules, function(rule) {
+        name = rule(name);
+    });
     return name;
 }
 
