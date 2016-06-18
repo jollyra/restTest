@@ -64,12 +64,10 @@ getTransactions()
         var totalBalance = calculateTotalBalance(transactions);  // Crunch the numbers
         console.log('total balance is ' + totalBalance);
 
-        humanizedTransactions = _.map(transactions, function(t) {
-            var t2 = deepCopy(t);
-            t2.HumanizedCompany = humanizeVendorName(t2.Company);
-            return t2;
+        _.each(transactions, function(transaction) {
+            transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
         });
-        // console.log(humanizedTransactions);
+        console.log(transactions);
 
     }).catch(function (err) {
         console.log(err);
