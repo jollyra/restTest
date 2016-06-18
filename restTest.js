@@ -74,6 +74,32 @@ function calculateCategoryTotals(categories) {
     return totals;
 }
 
+function filterByDate(transactions, endDate, startDate) {
+    if(startDate) {
+        if(typeof startDate !== 'string') {
+            throw 'startDate must be of type string';
+        }
+        startDate = new Date(startDate);
+    }
+    if(endDate) {
+        if(typeof endDate !== 'string') {
+            throw 'endDate must be of type string';
+        }
+        endDate = new Date(endDate);
+    }
+    return _.filter(transactions, function(transaction) {
+        var d = new Date(transaction.Date);
+        var inRange = true;
+        if (startDate) {
+            inRange = inRange && (startDate <= d);
+        }
+        if (endDate) {
+            inRange = inRange && (d <= endDate);
+        }
+        return inRange;
+    });
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -102,6 +128,10 @@ getTransactions()
 
         var catagoryTotals = calculateCategoryTotals(categorized);
         console.log(catagoryTotals);
+
+        // Calculate running total
+        var ts = filterByDate(transactions, '2013-12-22', '2013-12-20');
+        console.log(ts);
 
     }).catch(function (err) {
         console.log(err);
