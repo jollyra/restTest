@@ -51,7 +51,7 @@ function compareTransactions(t1, t2) {
     var isEqual = t1.Ledger === t2.Ledger && t1.Amount === t2.Amount &&
         t1.Company === t2.Company && t1.Date === t2.Date;
     if(isEqual) {
-        console.log('duplicate transaction: ', t1);
+        console.log('found duplicate transaction: ', t1);
     }
     return isEqual;
 }
@@ -72,15 +72,15 @@ getTransactions()
         _.each(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
-        console.log('# of transactions is ' + transactions.length);
+        console.log('downloaded %d transactions', transactions.length);
 
         var totalBalance = calculateTotalBalance(transactions);  // Crunch the numbers
-        console.log('total balance is ' + totalBalance);
+        console.log('total balance is $%d', totalBalance);
 
         _.each(transactions, function(transaction) {
             transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
         });
-        console.log(transactions);
+        // console.log(transactions);
 
         var dedupedTransactions = removeDuplicates(transactions);
         console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
