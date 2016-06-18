@@ -47,6 +47,19 @@ function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
     return restOfPageNums;
 }
 
+function compareTransactions(t1, t2) {
+    var isEqual = t1.Ledger === t2.Ledger && t1.Amount === t2.Amount &&
+        t1.Company === t2.Company && t1.Date === t2.Date;
+    if(isEqual) {
+        console.log('duplicate transaction: ', t1);
+    }
+    return isEqual;
+}
+
+function removeDuplicates(transactions) {
+    return _.uniqWith(transactions, compareTransactions);
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -68,6 +81,9 @@ getTransactions()
             transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
         });
         console.log(transactions);
+
+        var dedupedTransactions = removeDuplicates(transactions);
+        console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
 
     }).catch(function (err) {
         console.log(err);
