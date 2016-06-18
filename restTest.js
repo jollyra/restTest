@@ -11,7 +11,7 @@ function getTransactions(page) {
     return rp(options);
 }
 
-function calculateTotalBalance(transactions) {
+function calculateBalance(transactions) {
     return _.reduce(transactions, function(sum, transaction) {
         return sum + parseFloat(transaction.Amount);
     }, 0);
@@ -66,6 +66,14 @@ function getTransactionsByCategory(transactions) {
     });
 }
 
+function calculateCategoryTotals(categories) {
+    var totals = {};
+    _.each(categories, function(transactions, category) {
+        totals[category] = calculateBalance(transactions);
+    });
+    return totals;
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
@@ -80,19 +88,20 @@ getTransactions()
         });
         console.log('downloaded %d transactions', transactions.length);
 
-        var totalBalance = calculateTotalBalance(transactions);  // Crunch the numbers
+        var totalBalance = calculateBalance(transactions);  // Crunch the numbers
         console.log('total balance is $%d', totalBalance);
 
         _.each(transactions, function(transaction) {
             transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
         });
-        // console.log(transactions);
 
         var dedupedTransactions = removeDuplicates(transactions);
         console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
 
         var categorized = getTransactionsByCategory(transactions);
-        console.log(categorized);
+
+        var catagoryTotals = calculateCategoryTotals(categorized);
+        console.log(catagoryTotals);
 
     }).catch(function (err) {
         console.log(err);
