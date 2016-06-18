@@ -25,7 +25,7 @@ var humanizingRules = [
 
 function humanizeVendorName(name, rules) {
     rules = rules || [];
-    _.each(rules, function(rule) {
+    _.forEach(rules, function(rule) {
         name = rule(name);
     });
     return name;
@@ -68,7 +68,7 @@ function getTransactionsByCategory(transactions) {
 
 function calculateCategoryTotals(categories) {
     var totals = {};
-    _.each(categories, function(transactions, category) {
+    _.forEach(categories, function(transactions, category) {
         totals[category] = calculateBalance(transactions);
     });
     return totals;
@@ -83,7 +83,7 @@ getTransactions()
         });
         return Promise.all(promises);
     }).then(function(pages) {
-        _.each(pages, function(res) {
+        _.forEach(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
         console.log('downloaded %d transactions', transactions.length);
@@ -91,7 +91,7 @@ getTransactions()
         var totalBalance = calculateBalance(transactions);  // Crunch the numbers
         console.log('total balance is $%d', totalBalance);
 
-        _.each(transactions, function(transaction) {
+        _.forEach(transactions, function(transaction) {
             transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
         });
 
