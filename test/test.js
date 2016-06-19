@@ -86,4 +86,48 @@ describe('restTest', function() {
         assert.equal(restTest.compareTransactions(transactions[0], transactions[1]), false);
     });
   });
+
+  describe('#filterByDate()', function () {
+    it('should filter out transactions that aren\'t in it the date range', function () {
+        var transactions = [{
+            Date: "2013-12-23",
+        }, {
+            Date: "2013-12-22",
+        }, {
+            Date: "2013-12-21",
+        }, {
+            Date: "2013-12-19",
+        }];
+        var startDate = "2013-12-21";
+        var endDate = "2013-12-23";
+        var filteredTransactions = restTest.filterByDate(transactions, endDate, startDate);
+        assert.isArray(filteredTransactions);
+        assert.equal(filteredTransactions.length, 3);
+    });
+    it('should not need to specify start date', function () {
+        var transactions = [{
+            Date: "2013-12-23",
+        }, {
+            Date: "2013-12-22",
+        }, {
+            Date: "2013-12-21",
+        }, {
+            Date: "2013-12-19",
+        }];
+        var endDate = "2013-12-22";
+        var filteredTransactions = restTest.filterByDate(transactions, endDate);
+        assert.isArray(filteredTransactions);
+        assert.equal(filteredTransactions.length, 3);
+    });
+    it('should throw if date isn\'t a string', function () {
+        var transactions = [{
+            Date: "2013-12-19",
+        }];
+        var endDate = new Date("2013-12-22");
+        var fn = function() {
+            restTest.filterByDate(transactions, endDate);
+        }
+        assert.throws(fn, TypeError);
+    });
+  });
 });

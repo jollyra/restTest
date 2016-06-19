@@ -61,7 +61,7 @@ function filterByDate(transactions, endDate, startDate) {
     }
     if(endDate) {
         if(typeof endDate !== 'string') {
-            throw 'endDate must be of type string';
+            throw new TypeError('endDate must be of type string');
         }
         endDate = new Date(endDate);
     }
