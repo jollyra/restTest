@@ -55,7 +55,7 @@ function calculateCategoryTotals(categories) {
 function filterByDate(transactions, endDate, startDate) {
     if(startDate) {
         if(typeof startDate !== 'string') {
-            throw 'startDate must be of type string';
+            throw new TypeError('startDate must be of type string');
         }
         startDate = new Date(startDate);
     }
