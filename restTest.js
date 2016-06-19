@@ -3,9 +3,14 @@ var _ = require('lodash');
 
 
 function calculateBalance(transactions) {
-    return _.reduce(transactions, function(sum, transaction) {
-        return sum + parseFloat(transaction.Amount);
+    var total =  _.reduce(transactions, function(sum, transaction) {
+        var amount = parseFloat(transaction.Amount);
+        if(!isFinite(amount)) {
+            throw new TypeError('transaction amount must be a float\n' + JSON.stringify(transaction, null, ' '));
+        }
+        return sum + amount;
     }, 0);
+    return _.round(total, 2);
 }
 
 var humanizingRules = [
