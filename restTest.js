@@ -15,11 +15,9 @@ var humanizingRules = [
 ];
 
 function humanizeVendorName(name, rules) {
-    rules = rules || [];
-    _.forEach(rules, function(rule) {
-        name = rule(name);
-    });
-    return name;
+    return _.reduce(rules, function(str, rule) {
+        return rule(str);
+    }, name);
 }
 
 function compareTransactions(t1, t2) {
