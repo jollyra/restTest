@@ -16,7 +16,8 @@ function calculateBalance(transactions) {
 var humanizingRules = [
     function removeCreditCard(str) { return str.replace(/x{4,}\d+\s?/, ''); },  // e.g. 'xxxxxxxx6414'
     function removeLocationNumber(str) { return str.replace(/#[a-z]?\d+\s?/, ''); },  // e.g. '#x7618'
-    function removeWhiteSpace(str) { return str.trim(); }
+    function removeWhiteSpace(str) { return str.trim(); },
+    // etc...
 ];
 
 function humanizeVendorName(name, rules) {
@@ -93,12 +94,20 @@ function demo(transactions) {
     console.log('=======================');
     console.log('downloaded %d transactions', transactions.length);
 
-    var totalBalance = calculateBalance(transactions);  // Crunch the numbers
+    var totalBalance = calculateBalance(transactions);
     console.log('total balance is $%d', totalBalance);
 
     _.forEach(transactions, function(transaction) {
         transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
     });
+
+    console.log('\ncompany name improvements');
+    console.log('--------------------------');
+    _.forEach(transactions, function(transaction) {
+        console.log('original name:  %s', transaction.Company);
+        console.log('humanized name: %s', transaction.HumanizedCompany);
+    });
+    console.log('\n');
 
     var dedupedTransactions = removeDuplicates(transactions);
     console.log('removed %d duplicate transactions', transactions.length - dedupedTransactions.length);
@@ -162,7 +171,6 @@ getTransactions()
         _.forEach(pages, function(res) {
             transactions = _.concat(transactions, res.transactions);
         });
-        // Demo the calculations specified on the restTest page
         demo(transactions);
     }).catch(function (err) {
         console.log(err);
