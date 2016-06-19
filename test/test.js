@@ -57,4 +57,33 @@ describe('restTest', function() {
         assert.equal(pages[0], 1);
     });
   });
+
+  describe('#compareTransactions()', function () {
+    it('should return true if transactions are equal', function () {
+        var transactions = [{
+            Date: "2013-12-22",
+            Ledger: "Phone & Internet Expense",
+            Amount: "-110.71",
+            Company: "SHAW CABLESYSTEMS CALGARY AB"
+        }, {
+            Date: "2013-12-22",
+            Ledger: "Phone & Internet Expense",
+            Amount: "-110.71",
+            Company: "SHAW CABLESYSTEMS CALGARY AB"
+        }];
+        assert.equal(restTest.compareTransactions(transactions[0], transactions[1]), true);
+    });
+    it('should return false if transactions are almost equal', function () {
+        var transactions = [{
+            Ledger: "Phone & Internet Expense",
+            Amount: "-110.71",
+        }, {
+            Date: "2013-12-22",
+            Ledger: "Phone & Internet Expense",
+            Amount: "-110.71",
+            Company: "SHAW CABLESYSTEMS CALGARY AB"
+        }];
+        assert.equal(restTest.compareTransactions(transactions[0], transactions[1]), false);
+    });
+  });
 });
