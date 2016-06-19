@@ -2,6 +2,32 @@ var assert = require('chai').assert;
 var restTest = require('../restTest');
 
 describe('restTest', function() {
+  describe('#calculateBalance()', function () {
+    it('should sum multiple transactions', function () {
+        var transactions = [{
+            Amount: "-10.10",
+        }, {
+            Amount: "-8.12",
+        }, {
+            Amount: "0.21",
+        }];
+        assert.equal(restTest.calculateBalance(transactions), -18.01);
+    });
+    it('should handle summing 0 transactions', function () {
+        var transactions = [];
+        assert.equal(restTest.calculateBalance(transactions), 0);
+    });
+    it('should throw if transaction amounts are invalid floats', function () {
+        var transactions = [{
+            Amount: "aaa",
+        }];
+        var fn = function() {
+            restTest.calculateBalance(transactions);
+        }
+        assert.throws(fn, TypeError);
+    });
+  });
+
   describe('#getRestOfPageNums()', function () {
     it('should return multiple pages if there are more than 1', function () {
         var totalCount = 38;

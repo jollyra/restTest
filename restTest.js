@@ -144,7 +144,10 @@ function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
 
 module.exports = {
     // Exported for unit testing
-    getRestOfPageNums: getRestOfPageNums
+    calculateBalance: calculateBalance,
+    getRestOfPageNums: getRestOfPageNums,
+    compareTransactions: compareTransactions,
+    filterByDate: filterByDate,
 }
 
 var transactions = [];
