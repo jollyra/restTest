@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/jollyra/restTest/issues"
   },
-  "homepage": "https://github.com/jollyra/restTest#readme"
+  "homepage": "https://github.com/jollyra/restTest#readme",
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  },
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "request-promise": "^3.0.0"
+  }
 }
