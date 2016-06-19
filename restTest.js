@@ -137,6 +137,11 @@ function getRestOfPageNums(totalCount, firstPage, maxCountPerPage) {
     return restOfPageNums;
 }
 
+module.exports = {
+    // Exported for unit testing
+    getRestOfPageNums: getRestOfPageNums
+}
+
 var transactions = [];
 getTransactions()
     .then(function (res) {
