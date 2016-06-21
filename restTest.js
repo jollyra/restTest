@@ -142,8 +142,7 @@ function demo(transactions) {
     console.log('\n');
 }
 
-function getTransactions(page) {
-    page = page || 1;  // This paginated API starts at page 1
+function getTransactions(page=1) {
     var options = {
         uri: 'http://resttest.bench.co/transactions/' + page + '.json',
         json: true
