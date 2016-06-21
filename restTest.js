@@ -14,6 +14,14 @@ function calculateBalance(transactions) {
     return total;
 }
 
+// Return dollar currency notation
+function formatCurrency(value) {
+    if(math.smaller(value, 0)) {
+        value = math.abs(value);
+        return '($' + math.format(value, {notation: 'fixed', precision: 2}) + ')';
+    } else {
+        return '$' + math.format(value, {notation: 'fixed', precision: 2});
+    }
 }
 
 var humanizingRules = [
@@ -51,7 +59,7 @@ function getTransactionsByCategory(transactions) {
 function calculateCategoryTotals(categories) {
     var totals = {};
     _.forEach(categories, function(transactions, category) {
-        totals[category] = calculateBalance(transactions);
+        totals[category] = formatCurrency(calculateBalance(transactions));
     });
     return totals;
 }
@@ -87,7 +95,7 @@ function calculateDailyRunningTotal(transactions) {
     var dates = _.uniq(_.map(transactions, 'Date'));
     var runningTotals = {};
     _.forEach(dates, function(date) {
-        runningTotals[date] = calculateBalance(filterByDate(transactions, date));
+        runningTotals[date] = formatCurrency(calculateBalance(filterByDate(transactions, date)));
     });
     return runningTotals;
 }
@@ -98,7 +106,8 @@ function demo(transactions) {
     console.log('downloaded %d transactions', transactions.length);
 
     var totalBalance = calculateBalance(transactions);
-    console.log('total balance is $%d', totalBalance);
+    console.log('total balance is ' + totalBalance);
+    console.log('total balance is ' + formatCurrency(totalBalance));
 
     _.forEach(transactions, function(transaction) {
         transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
