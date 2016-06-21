@@ -24,7 +24,7 @@ describe('restTest', function() {
         var fn = function() {
             restTest.calculateBalance(transactions);
         }
-        assert.throws(fn, TypeError);
+        assert.throws(fn, /Undefined symbol/);
     });
   });
 

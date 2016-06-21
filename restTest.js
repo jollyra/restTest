@@ -6,9 +6,6 @@ var math = require('mathjs');
 function calculateBalance(transactions) {
     var total =  _.reduce(transactions, (sum, transaction) => {
         var amount = math.eval(transaction.Amount);
-        if(!isFinite(amount)) {
-            throw new TypeError('transaction amount must be a valid number\n' + JSON.stringify(transaction, null, ' '));
-        }
         return math.add(sum, amount);
     }, 0);
     return total;
