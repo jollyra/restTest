@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "lodash": "^4.13.1",
+    "mathjs": "^3.2.1",
     "request-promise": "^3.0.0"
   },
   "engine": "node 6.4.0"

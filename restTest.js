@@ -1,16 +1,19 @@
 var rp = require('request-promise');
 var _ = require('lodash');
+var math = require('mathjs');
 
 
 function calculateBalance(transactions) {
     var total =  _.reduce(transactions, function(sum, transaction) {
-        var amount = parseFloat(transaction.Amount);
+        var amount = math.eval(transaction.Amount);
         if(!isFinite(amount)) {
-            throw new TypeError('transaction amount must be a float\n' + JSON.stringify(transaction, null, ' '));
+            throw new TypeError('transaction amount must be a valid number\n' + JSON.stringify(transaction, null, ' '));
         }
-        return sum + amount;
+        return math.add(sum, amount);
     }, 0);
-    return _.round(total, 2);
+    return total;
+}
+
 }
 
 var humanizingRules = [
