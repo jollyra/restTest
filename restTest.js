@@ -4,7 +4,7 @@ var math = require('mathjs');
 
 
 function calculateBalance(transactions) {
-    var total =  _.reduce(transactions, function(sum, transaction) {
+    var total =  _.reduce(transactions, (sum, transaction) => {
         var amount = math.eval(transaction.Amount);
         if(!isFinite(amount)) {
             throw new TypeError('transaction amount must be a valid number\n' + JSON.stringify(transaction, null, ' '));
@@ -32,7 +32,7 @@ var humanizingRules = [
 ];
 
 function humanizeVendorName(name, rules) {
-    return _.reduce(rules, function(str, rule) {
+    return _.reduce(rules, (str, rule) => {
         return rule(str);
     }, name);
 }
@@ -51,14 +51,14 @@ function removeDuplicates(transactions) {
 }
 
 function getTransactionsByCategory(transactions) {
-    return _.groupBy(transactions, function (transaction) {
+    return _.groupBy(transactions, (transaction) => {
         return transaction.Ledger;
     });
 }
 
 function calculateCategoryTotals(categories) {
     var totals = {};
-    _.forEach(categories, function(transactions, category) {
+    _.forEach(categories, (transactions, category) => {
         totals[category] = formatCurrency(calculateBalance(transactions));
     });
     return totals;
@@ -77,7 +77,7 @@ function filterByDate(transactions, endDate, startDate) {
         }
         endDate = new Date(endDate);
     }
-    return _.filter(transactions, function(transaction) {
+    return _.filter(transactions, (transaction) => {
         var d = new Date(transaction.Date);
         var inRange = true;
         if (startDate) {
@@ -94,7 +94,7 @@ function filterByDate(transactions, endDate, startDate) {
 function calculateDailyRunningTotal(transactions) {
     var dates = _.uniq(_.map(transactions, 'Date'));
     var runningTotals = {};
-    _.forEach(dates, function(date) {
+    _.forEach(dates, (date) => {
         runningTotals[date] = formatCurrency(calculateBalance(filterByDate(transactions, date)));
     });
     return runningTotals;
@@ -108,13 +108,13 @@ function demo(transactions) {
     var totalBalance = calculateBalance(transactions);
     console.log('total balance is ' + formatCurrency(totalBalance));
 
-    _.forEach(transactions, function(transaction) {
+    _.forEach(transactions, (transaction) => {
         transaction.HumanizedCompany = humanizeVendorName(transaction.Company, humanizingRules);
     });
 
     console.log('\ncompany name improvements');
     console.log('--------------------------');
-    _.forEach(transactions, function(transaction) {
+    _.forEach(transactions, (transaction) => {
         console.log('original name:  %s', transaction.Company);
         console.log('humanized name: %s', transaction.HumanizedCompany);
     });
@@ -171,17 +171,17 @@ module.exports = {
 
 var transactions = [];
 getTransactions()
-    .then(function (res) {
+    .then((res) => {
         transactions = _.concat(transactions, res.transactions);
-        var promises = _.map(getRestOfPageNums(res.totalCount, res.page, res.transactions.length), function (pageNum) {
+        var promises = _.map(getRestOfPageNums(res.totalCount, res.page, res.transactions.length), (pageNum) => {
             return getTransactions(pageNum);
         });
         return Promise.all(promises);
-    }).then(function(pages) {
-        _.forEach(pages, function(res) {
+    }).then((pages) => {
+        _.forEach(pages, (res) => {
             transactions = _.concat(transactions, res.transactions);
         });
         demo(transactions);
-    }).catch(function (err) {
+    }).catch((err) => {
         console.log(err);
     });
