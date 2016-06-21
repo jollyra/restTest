@@ -106,7 +106,6 @@ function demo(transactions) {
     console.log('downloaded %d transactions', transactions.length);
 
     var totalBalance = calculateBalance(transactions);
-    console.log('total balance is ' + totalBalance);
     console.log('total balance is ' + formatCurrency(totalBalance));
 
     _.forEach(transactions, function(transaction) {
