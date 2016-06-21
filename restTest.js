@@ -170,10 +170,12 @@ module.exports = {
 }
 
 var transactions = [];
+var totalCount;
 getTransactions()
     .then((res) => {
         transactions = _.concat(transactions, res.transactions);
-        var promises = _.map(getRestOfPageNums(res.totalCount, res.page, res.transactions.length), (pageNum) => {
+        totalCount = res.totalCount;
+        var promises = _.map(getRestOfPageNums(totalCount, res.page, res.transactions.length), (pageNum) => {
             return getTransactions(pageNum);
         });
         return Promise.all(promises);
@@ -181,6 +183,9 @@ getTransactions()
         _.forEach(pages, (res) => {
             transactions = _.concat(transactions, res.transactions);
         });
+        if(totalCount !== transactions.length) {
+            throw new Error(`Was expecting ${totalCount} transactions but only got ${transactions.length}`);
+        }
         demo(transactions);
     }).catch((err) => {
         console.log(err);
