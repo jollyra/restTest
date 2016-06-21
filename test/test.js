@@ -1,5 +1,6 @@
 var assert = require('chai').assert;
 var restTest = require('../restTest');
+var math = require('mathjs');
 
 describe('restTest', function() {
   describe('#calculateBalance()', function () {
@@ -11,7 +12,8 @@ describe('restTest', function() {
         }, {
             Amount: "0.21",
         }];
-        assert.equal(restTest.calculateBalance(transactions), -18.01);
+        var value = restTest.calculateBalance(transactions);
+        assert.equal(math.round(value, 2), -18.01);
     });
     it('should handle summing 0 transactions', function () {
         var transactions = [];
