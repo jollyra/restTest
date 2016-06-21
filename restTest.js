@@ -144,7 +144,7 @@ function demo(transactions) {
 
 function getTransactions(page=1) {
     var options = {
-        uri: 'http://resttest.bench.co/transactions/' + page + '.json',
+        uri: `http://resttest.bench.co/transactions/${page}.json`,
         json: true
     };
     return rp(options);
